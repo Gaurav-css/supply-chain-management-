@@ -19,10 +19,10 @@ This project helps businesses enhance efficiency, visibility, and collaboration 
 
 🛠 Tech Stack
 
-Frontend: Html CSS and JavaScript 
+Frontend:
 
-Backend:Php
+Backend:
 
-Database:  MySQL 
+Database:  
 
-Authentication: JWT / OAuth 2.0
+
