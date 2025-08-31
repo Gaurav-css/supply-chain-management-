@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Requirement Entry</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #31473A, #EDF4F2);
+            /* Dark green and light green */
+            padding-top: 20px;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #31473A, #EDF4F2);
+            /* Dark green and light green */
+        }
+
+        .navbar-nav {
+            margin-left: auto;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .nav-link {
+            font-family: Cambria, serif;
+            letter-spacing: 7px;
+            margin-right: 15px;
+        }
+
+        .nav-link:last-child {
+            margin-right: 30px;
+        }
+
+        form {
+            max-width: 800px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0 15px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn-next {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .btn-next:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-add {
+            background-color: #6c757d;
+            color: #fff;
+        }
+
+        .btn-add:hover {
+            background-color: #5a6268;
+        }
+
+        .btn-remove {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        .btn-remove:hover {
+            background-color: #c82333;
+        }
+
+        .submit-btn {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        .submit-btn:hover {
+            background-color: #218838;
+        }
+
+        .stage {
+            display: none;
+        }
+
+        .stage.active {
+            display: block;
+        }
+    </style>
+
+    <script>
+        let currentStage = 0;
+
+        function showNextStage() {
+            const stages = document.querySelectorAll('.stage');
+            if (currentStage < stages.length - 1) {
+                stages[currentStage].classList.remove('active');
+                currentStage++;
+                stages[currentStage].classList.add('active');
+            }
+        }
+
+        function addRow(containerId, fields) {
+            const container = document.getElementById(containerId);
+            const div = document.createElement("div");
+            div.classList.add("row", "mb-3");
+            div.innerHTML = `${fields}
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-remove" onclick="this.parentElement.parentElement.remove()">Remove</button>
+                </div>`;
+            container.appendChild(div);
+        }
+
+        function calculateThreshold() {
+            const values = document.getElementsByName('requirement_value[]');
+            const weights = document.getElementsByName('requirement_weight[]');
+
+            let totalWeightedValue = 0;
+            let totalWeight = 0;
+
+            for (let i = 0; i < values.length; i++) {
+                const value = parseFloat(values[i].value);
+                const weight = parseFloat(weights[i].value);
+
+                if (!isNaN(value) && !isNaN(weight)) {
+                    totalWeightedValue += value * (weight / 100);
+                    totalWeight += weight;
+                }
+            }
+
+            if (totalWeight === 0) {
+                alert("Please enter valid requirement values and weights.");
+                return;
+            }
+
+            const threshold = (totalWeightedValue / (totalWeight / 100)).toFixed(2);
+            document.getElementById('stage1_threshold').value = threshold;
+        }
+    </script>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="home.html">HOME</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="requirement.html">REQUIREMENTS</a></li>
+                    <li class="nav-item"><a class="nav-link" href="response.html">RESPONSES</a></li>
+                    <li class="nav-item"><a class="nav-link" href="ranking.html">RANKING</a></li>
+                    <li class="nav-item"><a class="nav-link" href="logout.html">LOGOUT</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <form action="requirement.php" method="POST">
+        <div id="stage0" class="stage active">
+            <h2>Product Details</h2>
+            <div class="mb-3">
+                <label>Product Name:</label>
+                <input type="text" name="product_name" required>
+            </div>
+            <button type="button" class="btn btn-next" onclick="showNextStage()">Next</button>
+        </div>
+
+        <div id="stage1" class="stage">
+            <h2>Stage 1: Vendor Properties (Enter values in scale of 10)</h2>
+            <div id="stage1-container"></div>
+            <button type="button" class="btn btn-add" onclick="addRow('stage1-container', `
+            <div class='col-md-4'>
+                <label>Requirement Name:</label>
+                <input type='text' name='requirement_name[]' required>
+            </div>
+            <div class='col-md-3'>
+                <label>Requirement Value:</label>
+                <input type='number' name='requirement_value[]' required>
+            </div>
+            <div class='col-md-3'>
+                <label>Weight (%):</label>
+                <input type='number' name='requirement_weight[]' min='0' max='100' required>
+            </div>
+        `)">+ Add Property</button>
+
+            <div class="mt-3">
+                <label>Threshold Value (%):</label>
+                <input type="number" id="stage1_threshold" name="stage1_threshold" readonly required>
+                <button type="button" class="btn btn-add mt-2" onclick="calculateThreshold()">Calculate
+                    Threshold</button>
+            </div>
+            <button type="button" class="btn btn-next" onclick="showNextStage()">Next</button>
+        </div>
+
+
+        <div id="stage2" class="stage">
+            <h2>Stage 2: Technical Attributes</h2>
+            <div id="stage2-container"></div>
+            <button type="button" class="btn btn-add" onclick="addRow('stage2-container', `
+            <div class='col-md-6'>
+                <label>Attribute Name:</label>
+                <input type='text' name='technical_name[]' required>
+            </div>
+            <div class='col-md-4'>
+                <label>Attribute Value:</label>
+                <input type='text' name='technical_value[]' required>
+            </div>
+        `)">+ Add Attribute</button>
+            <button type="button" class="btn btn-next" onclick="showNextStage()">Next</button>
+        </div>
+
+
+        <div id="stage3" class="stage">
+            <h2>Stage 3: Non-Technical Attributes</h2>
+            <div id="stage3-container"></div>
+            <button type="button" class="btn btn-add" onclick="addRow('stage3-container', `
+            <div class='col-md-4'>
+                <label>Attribute Name:</label>
+                <input type='text' name='non_technical_name[]' required>
+            </div>
+            <div class='col-md-3'>
+                <label>Attribute Value:</label>
+                <input type='text' name='non_technical_value[]' required>
+            </div>
+            <div class='col-md-3'>
+                <label>Weight (%):</label>
+                <input type='number' name='non_technical_weight[]' min='0' max='100' required>
+            </div>
+        `)">+ Add Non-Technical Attribute</button>
+
+            <div class="mt-3">
+                <button type="submit" class="btn submit-btn">Submit</button>
+            </div>
+        </div>
+
+    </form>
+
+</body>
+
+</html>

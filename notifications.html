@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notifications</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #E7E8D1, #A7BEAE);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .navbar {
+      background: linear-gradient(135deg, #E7E8D1, #A7BEAE);
+    }
+    .navbar-nav {
+      margin-left: auto;
+      font-size: 25px;
+      font-weight: bold; 
+    }
+    .nav-link {
+      font-family: Cambria, serif;
+      letter-spacing: 7px;
+      margin-right: 15px; 
+    }
+    .container {
+      flex: 1;
+      margin-top: 50px;
+    }
+    .notifications-header {
+      text-align: center;
+      padding: 40px;
+      background: rgba(255,255,255,0.7);
+      border-radius: 10px;
+      margin-bottom: 30px;
+    }
+    .notification-card {
+      background: white;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      padding: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease-in-out;
+    }
+    .notification-card:hover {
+      transform: scale(1.02);
+    }
+    .no-notifications {
+      text-align: center;
+      color: #666;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="vendor_page.html">HOME</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="notifications.html">NOTIFICATIONS</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="previousentries.html">PREVIOUS ENTRIES</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="logout.html">LOGOUT</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <div class="notifications-header">
+      <h1 class="mb-4">Notifications</h1>
+    </div>
+    <div id="notifications-container" class="row">
+      <p class="no-notifications">Loading notifications...</p>
+    </div>
+  </div>
+
+  <div class="modal fade" id="responseModal" tabindex="-1" aria-labelledby="responseModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="responseModalLabel">Submit Response</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="responseForm">
+            <div id="requirement-list"></div>
+            <input type="hidden" id="buyerId" name="buyerId" />
+            <input type="hidden" id="productId" name="productId" />
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="submitBtn">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="notifications.js"></script>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Rankings</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <style>
+        body {
+            background: linear-gradient(135deg, #31473A, #EDF4F2);
+            /* Dark green and light green */
+            padding-top: 20px;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #31473A, #EDF4F2);
+            /* Dark green and light green */
+        }
+
+        .navbar-nav {
+            margin-left: auto;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .nav-link {
+            font-family: Cambria, serif;
+            letter-spacing: 7px;
+            margin-right: 15px;
+        }
+
+        .nav-link:last-child {
+            margin-right: 30px;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        .table-container {
+            background: #EDF4F2;
+            /* Dark green and light green */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            background-color: #b0e0e6;
+            /* Change to desired color */
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="home.html">HOME</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="requirement.html">REQUIREMENTS</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="response.html">RESPONSES</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="ranking.html">RANKING</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="logout.html">LOGOUT</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="table-container">
+            <h2 class="text-center"></h2>
+            <table id="rankingsTable">
+            </table>
+        </div>
+    </div>
+
+    <script>
+        fetch('rankings.php')
+            .then(response => response.text())
+            .then(data => {
+                document.querySelector('#rankingsTable').innerHTML += data;
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    </script>
+</body>
+
+</html>
